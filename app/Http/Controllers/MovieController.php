@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use Illuminate\Auth\Events\Validated;
 
 class MovieController extends Controller
 {
@@ -27,6 +28,7 @@ class MovieController extends Controller
     public function create()
     {
         //
+        return view('/admin/create');
     }
 
     /**
@@ -38,6 +40,23 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         //
+        $movie = new Movie();
+        $validated = $request->validate([
+            'title' => 'required|unique:movies',
+            'image_url' => 'required|url',
+            'published_year' => 'required|integer',
+            'is_showing' => 'required|boolean',
+            'description' => 'required|max:255'
+        ]);
+        $is_showing = $request->input('is_showing')==1?true:false;
+        $movie->title = $request->input('title');
+        $movie->image_url = $request->input('image_url');
+        $movie->published_year = $request->input('published_year');
+        $movie->is_showing = $is_showing;
+        $movie->description = $request->input('description');
+        session()->flash('flash_message', '登録が完了しました');
+        $movie->save();
+        return redirect('/admin/movies');
     }
 
     /**

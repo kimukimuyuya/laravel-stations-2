@@ -25,4 +25,5 @@ Route::get('/practice3', [PracticeController::class, 'sample3']);
 Route::get('/getPractice', [PracticeController::class, 'getPractice']);
 Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies', [MovieController::class, 'index']);
-Route::resource('admin/movies', MovieController::class);
+Route::resource('admin/movies', MovieController::class)->names('movies');
+Route::post('/admin/movies/store', [MovieController::class, 'store']);

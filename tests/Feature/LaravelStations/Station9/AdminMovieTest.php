@@ -42,7 +42,9 @@ class AdminMovieTest extends TestCase
         $response->assertDontSee('true');
         $response->assertDontSee('false');
     }
-
+    /**
+     * @group test
+     */
     public function test管理者映画作成画面が表示されているか(): void
     {
         $response = $this->get('/admin/movies/create');

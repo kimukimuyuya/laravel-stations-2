@@ -33,5 +33,6 @@
       </tr>
     @endforeach
   </table>
+  <a href="{{ route('movies.create') }}">新規作成</a>
 </body>
 </html>
