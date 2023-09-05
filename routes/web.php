@@ -27,3 +27,5 @@ Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies', [MovieController::class, 'index']);
 Route::resource('admin/movies', MovieController::class)->names('movies');
 Route::post('/admin/movies/store', [MovieController::class, 'store']);
+Route::patch('/admin/movies/{movie}/update', [MovieController::class, 'update'])->name('movies.update');
+Route::delete('/admin/movies/{movie}/destroy', [MovieController::class, 'destroy'])->name('movies.destroy');

@@ -9,6 +9,9 @@
 </head>
 <body>
   <h1>映画一覧</h1>
+  @if (session('flash_message'))
+      <div>{{ session('flash_message') }}</div>
+  @endif
   <table>
     <tr>
       <th>タイトル</th>
@@ -30,6 +33,13 @@
           @endif
         </td>
         <td>{{ $movie->description }}</td>
+        <td><a href="{{ route('movies.edit', ['movie' => $movie->id]) }}">編集</a></td>
+        <td>
+          <form action="{{ route('movies.destroy', ['movie' => $movie->id]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit">削除</button>
+          </form>
       </tr>
     @endforeach
   </table>

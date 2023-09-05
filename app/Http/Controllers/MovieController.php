@@ -79,6 +79,8 @@ class MovieController extends Controller
     public function edit($id)
     {
         //
+        $movie = Movie::find($id);
+        return view('/admin/edit', compact('movie'));
     }
 
     /**
@@ -91,6 +93,23 @@ class MovieController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $movie = Movie::find($id);
+        $validated = $request->validate([
+            'title' => 'required|unique:movies,title,'.$id,
+            'image_url' => 'required|url',
+            'published_year' => 'required|integer',
+            'is_showing' => 'required|boolean',
+            'description' => 'required|max:255'
+        ]);
+        $is_showing = $request->input('is_showing')==1?true:false;
+        $movie->title = $request->input('title');
+        $movie->image_url = $request->input('image_url');
+        $movie->published_year = $request->input('published_year');
+        $movie->is_showing = $is_showing;
+        $movie->description = $request->input('description');
+        session()->flash('flash_message', '登録が完了しました');
+        $movie->save();
+        return redirect('/admin/movies');
     }
 
     /**
@@ -102,5 +121,12 @@ class MovieController extends Controller
     public function destroy($id)
     {
         //
+        $movie = Movie::find($id);
+        if (!$movie) {
+            return abort(404);
+        }
+        $movie->delete();
+        session()->flash('flash_message', '削除が完了しました');
+        return redirect('/admin/movies');
     }
 }
